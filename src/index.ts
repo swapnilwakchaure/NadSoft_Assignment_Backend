@@ -14,7 +14,7 @@ app.use(cors());
 
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms"));
 
-app.get("/test", async (req, res) => {
+app.get("/", async (req, res) => {
     res.status(200).json({ message: "Server Connected" });
 });
 
