@@ -9,9 +9,12 @@
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "prod": "node dist/index.js",
-    "build": "tsc"
+    "build": "tsc",
+    "db": "prisma migrate dev --name init"
   },
   "dependencies": {
+    "@prisma/client": "^6.3.1",
+    "@supabase/supabase-js": "^2.48.1",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -27,6 +30,7 @@
     "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.13.1",
+    "prisma": "^6.3.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.3"
   }
