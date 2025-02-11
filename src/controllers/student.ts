@@ -4,14 +4,42 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const getStudent = async (req: Request, res: Response) => {
+    const { page = 1, limit = 5, query = "" } = req.query;
+    const currentPage = Number(page);
+    const itemsPerPage = Number(limit);
+
     try {
-        const data = await prisma.student.findMany();
-        res.status(200).json({ message: "Get all students data", data, status: "success" });
+        const totalStudents = await prisma.student.count();
+
+        const students = await prisma.student.findMany({
+            where: {
+                OR: [
+                    { name: { contains: String(query), mode: 'insensitive' } },
+                    { email: { contains: String(query), mode: 'insensitive' } }
+                ]
+            },
+            skip: (currentPage - 1) * itemsPerPage,
+            take: itemsPerPage,
+            orderBy: { createdAt: 'desc' }
+        });
+
+        // Response with pagination metadata
+        res.status(200).json({
+            message: "Get all students data",
+            data: students,
+            pagination: {
+                totalItems: totalStudents,
+                totalPages: Math.ceil(totalStudents / itemsPerPage),
+                currentPage,
+                itemsPerPage
+            },
+            status: "success"
+        });
     } catch (error) {
-        console.error("Error while get the student data: ", error);
+        console.error("Error while getting the student data: ", error);
         res.status(500).json({ message: "Internal Server Error", status: "error" });
     }
-}
+};
 
 const getStudentById = async (req: Request, res: Response) => {
     const { id } = req.params;
