@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 const getStudent = async (req: Request, res: Response) => {
     try {
-        console.log("I am running");
         const data = await prisma.student.findMany();
         res.status(200).json({ message: "Get all students data", data, status: "success" });
     } catch (error) {
@@ -39,8 +38,19 @@ const getStudentById = async (req: Request, res: Response) => {
 const createStudent = async (req: Request, res: Response) => {
     const { name, email, age, parentId } = req.body;
     try {
-        if (!name || !email || !age || parentId) {
+        if (!name || !email || !age || !parentId) {
             res.status(400).json({ message: "All fields are required", status: "warn" });
+            return;
+        }
+
+        const isEmailOrIdExist = await prisma.student.findFirst({
+            where: {
+                OR: [{ email }, { parentId }]
+            }
+        });
+
+        if (isEmailOrIdExist) {
+            res.status(400).json({ message: "Email or Parent ID already exists", status: "warn" });
             return;
         }
 

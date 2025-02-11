@@ -5,5 +5,5 @@ export const markRouter = express.Router();
 
 markRouter.get("/studentId", getMarksByStudentId);
 markRouter.post("/", createMark);
-markRouter.patch("/id", updateMarkById);
-markRouter.delete("/id", deleteMarkById);
+markRouter.patch("/:id", updateMarkById);
+markRouter.delete("/:id", deleteMarkById);

@@ -4,7 +4,7 @@ import { getStudent, getStudentById, createStudent, updateStudent, deleteStudent
 export const studentRouter = express.Router();
 
 studentRouter.get("/", getStudent);
-studentRouter.get("/id", getStudentById);
+studentRouter.get("/:id", getStudentById);
 studentRouter.post("/", createStudent);
-studentRouter.patch("/id", updateStudent);
-studentRouter.delete("/id", deleteStudent);
+studentRouter.patch("/:id", updateStudent);
+studentRouter.delete("/:id", deleteStudent);

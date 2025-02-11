@@ -15,7 +15,7 @@ datasource db {
 
 model Student {
   id        Int      @id @default(autoincrement())
-  parentId  Int
+  parentId  Int      @unique
   name      String
   email     String   @unique
   age       Int
